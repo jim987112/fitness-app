@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fitness App</title>
+<title>我的健身 App</title>
 <style>
 body{
     font-family: Arial, sans-serif;
@@ -23,10 +23,17 @@ input, button{
     margin-top:10px;
     border:none;
     border-radius:10px;
+    box-sizing:border-box;
 }
 button{
     background:#4CAF50;
     color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+#result, #aiAdvice{
+    margin-top:15px;
+    font-size:18px;
 }
 </style>
 </head>
@@ -43,16 +50,46 @@ button{
 
 <div class="card">
     <h2>訓練紀錄</h2>
-    <input placeholder="動作名稱">
-    <input placeholder="重量 kg">
-    <input placeholder="次數">
-    <button>儲存</button>
+    <input id="action" placeholder="動作名稱">
+    <input id="weight" placeholder="重量 kg">
+    <input id="reps" placeholder="次數">
+    <button onclick="saveWorkout()">儲存並開始 AI 分析</button>
+
+    <p id="result"></p>
 </div>
 
 <div class="card">
     <h2>AI 教練建議</h2>
-    <p>今天狀態不錯，建議下次加 2.5kg</p>
+    <p id="aiAdvice">請先輸入資料後按按鈕</p>
 </div>
-<p>123</p>
+
+<script>
+function saveWorkout() {
+    const action = document.getElementById("action").value;
+    const weight = parseFloat(document.getElementById("weight").value);
+    const reps = parseInt(document.getElementById("reps").value);
+
+    if (!action || !weight || !reps) {
+        alert("請先全部輸入完再分析！");
+        return;
+    }
+
+    document.getElementById("result").innerHTML =
+        `已儲存：${action}｜${weight}kg｜${reps}次`;
+
+    let advice = "";
+
+    if (weight >= 60 && reps >= 10) {
+        advice = `今天 ${action} 狀態很好，建議下次增加 2.5kg 💪`;
+    } else if (reps < 8) {
+        advice = `今天 ${action} 次數偏少，建議先維持重量再穩定動作`;
+    } else {
+        advice = `今天 ${action} 表現穩定，建議保持目前訓練量`;
+    }
+
+    document.getElementById("aiAdvice").innerHTML = advice;
+}
+</script>
+
 </body>
 </html>
